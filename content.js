@@ -95,7 +95,7 @@ function HighlightCurrentLesson() {
       const links = infoSpan.querySelectorAll("a");
       links.forEach(link => {
           link.style.fontWeight = "bold";
-          link.style.color = "#4d8400"
+          link.style.color = colors[9] || "#ffffff";
       });
     }
   } 
