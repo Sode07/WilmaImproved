@@ -29,9 +29,9 @@ function ChangeColor() {
 
   // Palkkien värit
   const colors = [
-    "#ffff00", // 1
+    "#eaea60", // 1
     "#b4c6e7", // 2
-    "#c65911", // 3
+    "#ffc577", // 3
     "#ffccff", // 4
     "#d6dce4", // 5
     "#c6e0b4", // 6
