@@ -1,53 +1,42 @@
-// Luodaan muuttuja oppitunnille.
-var ClassElementNumber = 0;
-var ClassModule;
+let colors = [
+  "#eaea60", "#b4c6e7", "#ffc577", "#ffccff", "#d6dce4",
+  "#c6e0b4", "#ff0000", "#0066ff", "#ffffff", "#DC143C"
+];
 
-// Odotetaan että sivu latautuu
-setTimeout(FindClass, 1000)
+let ClassElementNumber = 0;
+let ClassModule;
 
 function FindClass() {
-  
-  // Etsitään oppituntielementti.
-  var ClassElement = document.getElementsByClassName("block")[ClassElementNumber];
-  // Etsitään opptunnintiedot.
-  var ClassInformation = document.getElementsByClassName("block")[ClassElementNumber].getElementsByClassName("info")[0];
-  // Kopioidaan oppitunnin nimi.
-  var ClassName = ClassInformation.getElementsByClassName("no-underline-link")[0].innerHTML;
+  const ClassElement = document.getElementsByClassName("block")[ClassElementNumber];
+  if (!ClassElement) return;
 
-  // Valitaan ainoastaan palkkinumero.
-  ClassModule = ClassName.slice(1, 3);
-  ClassModule = parseInt(ClassModule);
+  const ClassInformation = ClassElement.getElementsByClassName("info")[0];
+  const ClassName = ClassInformation.getElementsByClassName("no-underline-link")[0].innerHTML;
+  ClassModule = parseInt(ClassName.slice(1, 3));
 
-  // Tarkistetaan löytyikö moduulia. Jos moduulia ei löydetty, ohjelma lopetetaan
-  if (ClassModule != null) {
-    ChangeColor()
+  if (!isNaN(ClassModule)) {
+    ChangeColor();
   }
-
 }
 
 function ChangeColor() {
-
-  // Palkkien värit
-  const colors = [
-    "#eaea60", // 1
-    "#b4c6e7", // 2
-    "#ffc577", // 3
-    "#ffccff", // 4
-    "#d6dce4", // 5
-    "#c6e0b4", // 6
-    "#ff0000", // 7
-    "#0066ff", // 8
-    "#ffffff", // 9
-    "#DC143C"  // Crimson
-  ]  
-
-  // Asetetaan palkin mukainen väri oppitunnin elementille
-  var ClassElement = document.getElementsByClassName("block")[ClassElementNumber].style.backgroundColor = colors[ClassModule - 1];
-
-  // Valitaan seuraava tunti
-  ClassElementNumber++
-
-  // Etsitään seuraava tunti
-  FindClass()
-
+  const ClassElement = document.getElementsByClassName("block")[ClassElementNumber];
+  ClassElement.style.backgroundColor = colors[ClassModule - 1] || '#ffffff';
+  ClassElementNumber++;
+  FindClass();
 }
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.action === "updateColors") {
+    colors = request.colors;
+    ClassElementNumber = 0;
+    FindClass();
+  }
+});
+
+chrome.storage.sync.get(['colors'], function(result) {
+  if (result.colors) {
+    colors = result.colors;
+  }
+  setTimeout(FindClass, 1000);
+});

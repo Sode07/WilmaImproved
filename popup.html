@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      width: 300px;
+    }
+    .color-option {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .color-option.selected {
+      border: 2px solid black;
+    }
+  </style>
+</head>
+<body>
+  <h3>Valitse Värit</h3>
+  <div id="color-options"></div>
+  <br>
+  <input type="color" id="custom-color" value="#000000">
+  <script src="popup.js"></script>
+</body>
+</html>
